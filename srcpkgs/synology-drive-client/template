@@ -15,33 +15,14 @@ license="custom:Proprietary"
 homepage="https://www.synology.com"
 distfiles="https://global.download.synology.com/download/Utility/SynologyDriveClient/2.0.2-11078/Ubuntu/Installer/x86_64/synology-drive-client-11078.x86_64.deb"
 checksum=8a65302592dbd7260de106bfb2cca48e8076e9065246f9b0da4d54f5654c2883
-#_license_checksum=4a66993926096dd60fb03d7d82bd806f2f4b2d6ab2970aa0462e669f51f076a0
 repository=nonfree
 restricted=yes
 nostrip=yes
 
-#post_extract() {
-#	curl -L https://www.synology-drive-client.com/us/legal/end-user-agreement/ |
-#		w3m -dump -I utf-8 -T text/html |
-#		sed -n '/synology-drive-client Terms and Conditions of Use/,/^USA$/p' > EULA
-#
-#	filesum="$(xbps-digest EULA)"
-#	if [ "$filesum" != "$_license_checksum" ]; then
-#		msg_error "SHA256 mismatch for EULA:\n$filesum\n"
-#	fi
-#}
-
 do_build() {
 	ar x "${_filename}"
-#  ar x "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${_filname}"
 	bsdtar -xf data.tar.xz
 }
-
-#_linklib() {
-#	local LIB
-#	LIB="$(find /usr/lib -name "${1}.so*" | sort | tail -1)"
-#	ln -sf "${LIB}" "${DESTDIR}/usr/libexec/synology-drive-client/${1}.so.${2}"
-#}
 
 do_install() {
 	vbin "usr/bin/synology-drive"
@@ -54,10 +35,4 @@ do_install() {
 	vmkdir usr/share/applications
 	vcopy usr/share/applications/synology-drive.desktop "/usr/share/applications/synology-drive.desktop"
 
-#	# provide dynamic libraries
-#	_linklib libssl 1.0.0
-#	_linklib libcrypto 1.0.0
-#	ln -s /usr/lib/libcurl.so.4 ${DESTDIR}/usr/libexec/synology-drive-client/libcurl-gnutls.so.4
-
-#	vlicense EULA
 }
